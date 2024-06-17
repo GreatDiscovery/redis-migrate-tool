@@ -261,7 +261,7 @@ int redis_node_init(redis_node *rnode, const char *addr, redis_group *rgroup)
 
     rnode->owner = rgroup;
 
-    rnode->addr = rmt_strdup(addr);
+    rnode->addr = sdsdup((sds) addr);
     if (rnode->addr == NULL) {
         log_error("ERROR: Out of memory");
         goto error;
@@ -389,7 +389,7 @@ void redis_node_deinit(redis_node *rnode)
     }
 
     if (rnode->addr != NULL) {
-        free(rnode->addr);
+        sdsfree(rnode->addr);
         rnode->addr = NULL;
     }
 
